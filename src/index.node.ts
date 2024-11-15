@@ -4,7 +4,9 @@ import { AptosClientRequest, AptosClientResponse } from "./types";
 
 const cookieJar = new CookieJar();
 
-export default async function aptosClient<Res>(requestOptions: AptosClientRequest): Promise<AptosClientResponse<Res>> {
+export default async function aptosClient<Res>(
+  requestOptions: AptosClientRequest,
+): Promise<AptosClientResponse<Res>> {
   const { params, method, url, headers, body } = requestOptions;
 
   const request: OptionsOfJSONResponseBody = {
@@ -21,7 +23,9 @@ export default async function aptosClient<Res>(requestOptions: AptosClientReques
 
           if (cookies?.length > 0 && options.headers) {
             /* eslint-disable no-param-reassign */
-            options.headers.cookie = cookies.map((cookie: any) => `${cookie.name}=${cookie.value}`).join("; ");
+            options.headers.cookie = cookies
+              .map((cookie: any) => `${cookie.name}=${cookie.value}`)
+              .join("; ");
           }
         },
       ],

@@ -12,7 +12,9 @@ The `@aptos-labs/aptos-client` package supports http2 protocol and implements 2 
 #### Function signature
 
 ```ts
-async function aptosClient<Res>(requestOptions: AptosClientRequest): Promise<AptosClientResponse<Res>>;
+async function aptosClient<Res>(
+  requestOptions: AptosClientRequest,
+): Promise<AptosClientResponse<Res>>;
 ```
 
 #### Types
@@ -43,6 +45,13 @@ type AptosClientRequest = {
 ```ts
 import aptosClient from "@aptos-labs/aptos-client";
 
-const response = await aptosClient<Res>({ url, method, body, params, headers, overrides });
+const response = await aptosClient<Res>({
+  url,
+  method,
+  body,
+  params,
+  headers,
+  overrides,
+});
 return response;
 ```

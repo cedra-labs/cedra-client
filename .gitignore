@@ -1,1 +1,8 @@
 dist/
+node_modules/
+.env
+.aptos
+.idea/
+*.swp
+*.swo
+.vscode/

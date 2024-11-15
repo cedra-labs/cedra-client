@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { AptosClientRequest, AptosClientResponse } from "./types";
 
-export default async function aptosClient<Res>(options: AptosClientRequest): Promise<AptosClientResponse<Res>> {
+export default async function aptosClient<Res>(
+  options: AptosClientRequest,
+): Promise<AptosClientResponse<Res>> {
   const { params, method, url, headers, body, overrides } = options;
   const requestConfig: AxiosRequestConfig = {
     headers,
