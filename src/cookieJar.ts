@@ -68,9 +68,9 @@ export class CookieJar {
       }
 
       const nameLow = name.toLowerCase();
-      // eslint-disable-next-line quotes
       const val =
-        value?.charAt(0) === "'" || value?.charAt(0) === "\""
+        // eslint-disable-next-line quotes
+        value?.charAt(0) === "'" || value?.charAt(0) === '"'
           ? value?.slice(1, -1)
           : value;
       if (nameLow === "expires") {
