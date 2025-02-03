@@ -8,6 +8,7 @@ adheres to the format set out by [Keep a Changelog](https://keepachangelog.com/e
 # 0.2.0
 
 - Update dependencies to latest versions, move them to peer dependencies
+- Add experimental support for binary client calls
 
 # 0.1.1
 
