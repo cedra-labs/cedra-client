@@ -1,3 +1,9 @@
+![License][github-license]
+[![NPM Package Version][npm-image-version]][npm-url]
+![Node Version](https://img.shields.io/node/v/%40aptos-labs%2Faptos-client)
+![NPM bundle size](https://img.shields.io/bundlephobia/min/%40aptos-labs/aptos-client)
+[![NPM Package Downloads][npm-image-downloads]][npm-url]
+
 # @aptos-labs/aptos-client
 
 This package implements a client with which you can interact with the Aptos network. It can be used standalone, and it is the client package used by the Aptos TypeScript SDK.
@@ -55,3 +61,8 @@ const response = await aptosClient<Res>({
 });
 return response;
 ```
+
+[npm-image-version]: https://img.shields.io/npm/v/%40aptos-labs%2Faptos-client.svg
+[npm-image-downloads]: https://img.shields.io/npm/dm/%40aptos-labs%2Faptos-client.svg
+[npm-url]: https://npmjs.org/package/@aptos-labs/aptos-client
+[github-license]: https://img.shields.io/github/license/aptos-labs/aptos-client
