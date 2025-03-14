@@ -5,10 +5,17 @@ adheres to the format set out by [Keep a Changelog](https://keepachangelog.com/e
 
 # Unreleased
 
+# 1.1.0
+
+- Bump `axios` to 1.8.0
+
+# 1.0.0
+
+- Add experimental support for binary client calls
+
 # 0.2.0
 
 - Update dependencies to latest versions, move them to peer dependencies
-- Add experimental support for binary client calls
 
 # 0.1.1
 
