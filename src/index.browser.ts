@@ -13,7 +13,7 @@ export default async function aptosClient<Res>(
 }
 
 export async function jsonRequest<Res>(
-    options: AptosClientRequest,
+  options: AptosClientRequest,
 ): Promise<AptosClientResponse<Res>> {
   const { params, method, url, headers, body, overrides } = options;
   const requestConfig: AxiosRequestConfig = {
@@ -42,7 +42,6 @@ export async function jsonRequest<Res>(
     throw error;
   }
 }
-
 
 /**
  * Used for binary responses, such as BCS outputs
