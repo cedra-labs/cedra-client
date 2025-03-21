@@ -5,6 +5,11 @@ adheres to the format set out by [Keep a Changelog](https://keepachangelog.com/e
 
 # Unreleased
 
+# 1.2.0
+- Bump `axios` to >=1.8.2
+- Upgrade dev dependencies
+- Format code
+
 # 1.1.0
 
 - Bump `axios` to 1.8.0
