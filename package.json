@@ -53,7 +53,7 @@
     "Aptos SDK"
   ],
   "peerDependencies": {
-    "axios": "^1.8.2",
+    "axios": "^1.8.4",
     "got": "^11.8.6"
   },
   "devDependencies": {
