@@ -5,9 +5,9 @@ adheres to the format set out by [Keep a Changelog](https://keepachangelog.com/e
 
 # Unreleased
 
-# 2.0.0
-
 - Remove `axios` from browser implementation in favor of native `fetch`
+- Remove support for Node.js versions earlier than 20.x.x
+- Upgraded pnpm version to 10.10.0
 
 # 1.2.0
 
