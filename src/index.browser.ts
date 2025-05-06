@@ -6,13 +6,13 @@ import { AptosClientRequest, AptosClientResponse } from "./types";
  * @param options
  */
 export default async function aptosClient<Res>(
-  options: AptosClientRequest
+  options: AptosClientRequest,
 ): Promise<AptosClientResponse<Res>> {
   return jsonRequest<Res>(options);
 }
 
 export async function jsonRequest<Res>(
-  options: AptosClientRequest
+  options: AptosClientRequest,
 ): Promise<AptosClientResponse<Res>> {
   const { requestUrl, requestConfig } = buildRequest(options);
 
@@ -35,7 +35,7 @@ export async function jsonRequest<Res>(
  * @param options
  */
 export async function bcsRequest(
-  options: AptosClientRequest
+  options: AptosClientRequest,
 ): Promise<AptosClientResponse<ArrayBuffer>> {
   const { requestUrl, requestConfig } = buildRequest(options);
 
@@ -63,12 +63,14 @@ function buildRequest(options: AptosClientRequest) {
       : JSON.stringify(options.body);
 
   const withCredentialsOption = options.overrides?.WITH_CREDENTIALS;
-  const credentials =
-    withCredentialsOption === false
-      ? "omit"
-      : withCredentialsOption === true
-        ? "include"
-        : (withCredentialsOption ?? "include");
+  let credentials: RequestCredentials;
+  if (withCredentialsOption === false) {
+    credentials = "omit";
+  } else if (withCredentialsOption === true) {
+    credentials = "include";
+  } else {
+    credentials = withCredentialsOption ?? "include";
+  }
 
   const requestConfig: RequestInit = {
     method: options.method,
