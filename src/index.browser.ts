@@ -1,4 +1,3 @@
-import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { AptosClientRequest, AptosClientResponse } from "./types";
 
 /**
@@ -15,32 +14,18 @@ export default async function aptosClient<Res>(
 export async function jsonRequest<Res>(
   options: AptosClientRequest,
 ): Promise<AptosClientResponse<Res>> {
-  const { params, method, url, headers, body, overrides } = options;
-  const requestConfig: AxiosRequestConfig = {
-    headers,
-    method,
-    url,
-    params,
-    data: body,
-    withCredentials: overrides?.WITH_CREDENTIALS ?? true,
-  };
+  const { requestUrl, requestConfig } = buildRequest(options);
 
-  try {
-    const response = await axios(requestConfig);
-    return {
-      status: response.status,
-      statusText: response.statusText!,
-      data: response.data,
-      headers: response.headers,
-      config: response.config,
-    };
-  } catch (error) {
-    const axiosError = error as AxiosError<Res>;
-    if (axiosError.response) {
-      return axiosError.response;
-    }
-    throw error;
-  }
+  const res = await fetch(requestUrl, requestConfig);
+  const data = await res.json();
+
+  return {
+    status: res.status,
+    statusText: res.statusText,
+    data,
+    headers: res.headers,
+    config: requestConfig,
+  };
 }
 
 /**
@@ -51,31 +36,58 @@ export async function jsonRequest<Res>(
  */
 export async function bcsRequest(
   options: AptosClientRequest,
-): Promise<AptosClientResponse<Buffer>> {
-  const { params, method, url, headers, body, overrides } = options;
-  const requestConfig: AxiosRequestConfig = {
+): Promise<AptosClientResponse<ArrayBuffer>> {
+  const { requestUrl, requestConfig } = buildRequest(options);
+
+  const res = await fetch(requestUrl, requestConfig);
+  const data = await res.arrayBuffer();
+
+  return {
+    status: res.status,
+    statusText: res.statusText,
+    data,
+    headers: res.headers,
+    config: requestConfig,
+  };
+}
+
+function buildRequest(options: AptosClientRequest) {
+  const headers = new Headers();
+  Object.entries(options?.headers ?? {}).forEach(([key, value]) => {
+    headers.append(key, String(value));
+  });
+
+  const body =
+    options.body instanceof Uint8Array
+      ? options.body
+      : JSON.stringify(options.body);
+
+  const withCredentialsOption = options.overrides?.WITH_CREDENTIALS;
+  let credentials: RequestCredentials;
+  if (withCredentialsOption === false) {
+    credentials = "omit";
+  } else if (withCredentialsOption === true) {
+    credentials = "include";
+  } else {
+    credentials = withCredentialsOption ?? "include";
+  }
+
+  const requestConfig: RequestInit = {
+    method: options.method,
     headers,
-    method,
-    url,
-    params,
-    data: body,
-    withCredentials: overrides?.WITH_CREDENTIALS ?? true,
+    body,
+    credentials,
   };
 
-  try {
-    const response = await axios(requestConfig);
-    return {
-      status: response.status,
-      statusText: response.statusText!,
-      data: response.data,
-      headers: response.headers,
-      config: response.config,
-    };
-  } catch (error) {
-    const axiosError = error as AxiosError<Buffer>;
-    if (axiosError.response) {
-      return axiosError.response;
+  const params = new URLSearchParams();
+  Object.entries(options.params ?? {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.append(key, String(value));
     }
-    throw error;
-  }
+  });
+
+  const requestUrl =
+    options.url + (params.size > 0 ? `?${params.toString()}` : "");
+
+  return { requestUrl, requestConfig };
 }
