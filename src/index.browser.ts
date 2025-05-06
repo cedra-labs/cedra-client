@@ -6,37 +6,17 @@ import { AptosClientRequest, AptosClientResponse } from "./types";
  * @param options
  */
 export default async function aptosClient<Res>(
-  options: AptosClientRequest,
+  options: AptosClientRequest
 ): Promise<AptosClientResponse<Res>> {
   return jsonRequest<Res>(options);
 }
 
 export async function jsonRequest<Res>(
-  options: AptosClientRequest,
+  options: AptosClientRequest
 ): Promise<AptosClientResponse<Res>> {
-  const headers = new Headers();
-  Object.entries(options?.headers ?? {}).forEach(([key, value]) => {
-    headers.append(key, String(value));
-  });
-  if (options.method === "POST") {
-    headers.append("Content-Type", "application/json");
-  }
+  const { requestUrl, requestConfig } = buildRequest(options);
 
-  const requestConfig: RequestInit = {
-    method: options.method,
-    headers,
-    body: JSON.stringify(options.body),
-    credentials: options.overrides?.WITH_CREDENTIALS ?? "include",
-  };
-
-  const params = new URLSearchParams();
-  Object.entries(options.params).forEach(([key, value]) => {
-    if (value !== undefined) {
-      params.append(key, String(value));
-    }
-  });
-
-  const res = await fetch(`${options.url}?${params}`, requestConfig);
+  const res = await fetch(requestUrl, requestConfig);
   const data = await res.json();
 
   return {
@@ -55,31 +35,11 @@ export async function jsonRequest<Res>(
  * @param options
  */
 export async function bcsRequest(
-  options: AptosClientRequest,
+  options: AptosClientRequest
 ): Promise<AptosClientResponse<ArrayBuffer>> {
-  const headers = new Headers();
-  Object.entries(options?.headers ?? {}).forEach(([key, value]) => {
-    headers.append(key, String(value));
-  });
-  if (options.method === "POST") {
-    headers.append("Content-Type", "application/json");
-  }
+  const { requestUrl, requestConfig } = buildRequest(options);
 
-  const requestConfig: RequestInit = {
-    method: options.method,
-    headers,
-    body: JSON.stringify(options.body),
-    credentials: options.overrides?.WITH_CREDENTIALS ?? "include",
-  };
-
-  const params = new URLSearchParams();
-  Object.entries(options.params).forEach(([key, value]) => {
-    if (value !== undefined) {
-      params.append(key, String(value));
-    }
-  });
-
-  const res = await fetch(`${options.url}?${params}`, requestConfig);
+  const res = await fetch(requestUrl, requestConfig);
   const data = await res.arrayBuffer();
 
   return {
@@ -89,4 +49,43 @@ export async function bcsRequest(
     headers: res.headers,
     config: requestConfig,
   };
+}
+
+function buildRequest(options: AptosClientRequest) {
+  const headers = new Headers();
+  Object.entries(options?.headers ?? {}).forEach(([key, value]) => {
+    headers.append(key, String(value));
+  });
+
+  const body =
+    options.body instanceof Uint8Array
+      ? options.body
+      : JSON.stringify(options.body);
+
+  const withCredentialsOption = options.overrides?.WITH_CREDENTIALS;
+  const credentials =
+    withCredentialsOption === false
+      ? "omit"
+      : withCredentialsOption === true
+        ? "include"
+        : (withCredentialsOption ?? "include");
+
+  const requestConfig: RequestInit = {
+    method: options.method,
+    headers,
+    body,
+    credentials,
+  };
+
+  const params = new URLSearchParams();
+  Object.entries(options.params ?? {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.append(key, String(value));
+    }
+  });
+
+  const requestUrl =
+    options.url + (params.size > 0 ? `?${params.toString()}` : "");
+
+  return { requestUrl, requestConfig };
 }
