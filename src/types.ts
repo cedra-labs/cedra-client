@@ -1,4 +1,4 @@
-export type AptosClientResponse<Res> = {
+export type CedraClientResponse<Res> = {
   status: number;
   statusText: string;
   data: Res;
@@ -8,7 +8,7 @@ export type AptosClientResponse<Res> = {
   headers?: any;
 };
 
-export type AptosClientRequest = {
+export type CedraClientRequest = {
   url: string;
   method: "GET" | "POST";
   body?: any;

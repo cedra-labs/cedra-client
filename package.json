@@ -1,6 +1,6 @@
 {
-  "name": "@aptos-labs/aptos-client",
-  "description": "Client package for accessing the Aptos network API.",
+  "name": "@cedra-labs/cedra-client",
+  "description": "Client package for accessing the Cedra network API.",
   "packageManager": "pnpm@10.10.0",
   "license": "Apache-2.0",
   "engines": {
@@ -40,17 +40,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aptos-labs/aptos-client.git"
+    "url": "https://github.com/cedra-labs/cedra-client.git"
   },
-  "homepage": "https://github.com/aptos-labs/aptos-client",
+  "homepage": "https://github.com/cedra-labs/cedra-client",
   "bugs": {
-    "url": "https://github.com/aptos-labs/aptos-client/issues"
+    "url": "https://github.com/cedra-labs/cedra-client/issues"
   },
-  "author": "aptoslabs.com",
+  "author": "cedralabs.com",
   "keywords": [
-    "Aptos",
-    "Aptos Labs",
-    "Aptos SDK"
+    "Cedra",
+    "Cedra Labs",
+    "Cedra SDK"
   ],
   "peerDependencies": {
     "got": "^11.8.6"

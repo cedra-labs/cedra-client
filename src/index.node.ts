@@ -5,7 +5,7 @@ import got, {
   Response,
 } from "got";
 import { CookieJar } from "./cookieJar";
-import { AptosClientRequest, AptosClientResponse } from "./types";
+import { CedraClientRequest, CedraClientResponse } from "./types";
 
 const cookieJar = new CookieJar();
 
@@ -13,15 +13,15 @@ const cookieJar = new CookieJar();
  * Used for JSON responses
  * @param requestOptions
  */
-export default async function aptosClient<Res>(
-  requestOptions: AptosClientRequest,
-): Promise<AptosClientResponse<Res>> {
+export default async function cedraClient<Res>(
+  requestOptions: CedraClientRequest,
+): Promise<CedraClientResponse<Res>> {
   return jsonRequest<Res>(requestOptions);
 }
 
 export async function jsonRequest<Res>(
-  requestOptions: AptosClientRequest,
-): Promise<AptosClientResponse<Res>> {
+  requestOptions: CedraClientRequest,
+): Promise<CedraClientResponse<Res>> {
   const { params, method, url, headers, body } = requestOptions;
 
   const request: OptionsOfJSONResponseBody = {
@@ -84,8 +84,8 @@ export async function jsonRequest<Res>(
  * @param requestOptions
  */
 export async function bcsRequest(
-  requestOptions: AptosClientRequest,
-): Promise<AptosClientResponse<Buffer>> {
+  requestOptions: CedraClientRequest,
+): Promise<CedraClientResponse<Buffer>> {
   const { params, method, url, headers, body } = requestOptions;
 
   const request: OptionsOfBufferResponseBody = {
@@ -149,7 +149,7 @@ export async function bcsRequest(
   throw new Error(`Unsupported method: ${method}`);
 }
 
-function parseResponse<Res>(response: Response<Res>): AptosClientResponse<Res> {
+function parseResponse<Res>(response: Response<Res>): CedraClientResponse<Res> {
   return {
     status: response.statusCode,
     statusText: response.statusMessage || "",
